@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Update Post</h1>
+	<form enctype="multipart/form-data" method="POST">
+		{% csrf_token %}
+		<input class="inp" value="{{post.title}}" type="text" name="title">
+		<input class="inp" value="{{post.content}}" type="text" name="content">
+		<input class="inp" type="file" name="post_image">
+		<button type="submit">Update</button>
+	</form>
+
+{% endblock content %}

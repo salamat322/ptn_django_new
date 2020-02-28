@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+    <h1>Welcome to Instagram. Create your account</h1>
+    <form method="POST">
+        {% csrf_token %}
+
+        <input type="text" name="username" placeholder="username">
+        <input type="email" name="email" placeholder="email">
+        <input type="password" placeholder="password" name="pass1">
+        <input type="password" placeholder="confirm your password" name="pass2">
+        <button type="submit">Sign up</button>
+    </form>
+    {% if messages %}
+        {% for message in messages %}
+            <h4 {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</h4>
+        {% endfor %}
+    {% endif %}
+
+{% endblock content %}

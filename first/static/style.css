@@ -1,0 +1,37 @@
+ul {
+	display: flex;
+}
+
+li {
+	margin: 15px;
+	justify-content: space-between;}
+
+
+.post-div {
+	border: 1px solid black;
+	border-radius: 10px;
+	padding: 10px 30px;
+	margin-top: 10px;
+}
+
+.inp {
+	display: block;
+	margin: 10px;
+	border: 1px solid blueviolet;
+	padding: 10px;
+	border-radius: 10px;
+}
+
+button {
+	margin: 10px;
+	border: 1px solid green;
+	padding: 10px;
+	border-radius: 10px;
+	background-color: white;
+	color: black;
+}
+
+button:hover{
+	color: white;
+	background-color: green;
+}

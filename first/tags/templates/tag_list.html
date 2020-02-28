@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<ul style="display: block;">
+    {% for tag in tags %}
+
+        <li><h2><a href="{% url 'tag-detail' tag.id %}">{{tag.title}}</a></h2></li>
+
+    {% endfor %}
+
+</ul>
+
+
+{% endblock content %}
+

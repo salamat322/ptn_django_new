@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+	<div class="post-div">
+		<p><b>{{post.user.username}}</b></p>
+		<h2>{{ post.title }}</h2>
+		<p>{{ post.content }}</p>
+		
+		{% if post.image %}
+			<img src="{{ post.image.url }}" alt="" style="width: 200px; height: 200px">
+		{% endif %}
+		
+		<h5>{{ post.date }}</h5>
+		<h3><b>Comments: </b></h3>
+			{% for comment in post.comment_set.all %}
+			<div style="display: flex;">
+				<a href="#">{{ comment.user.username }}</a>
+				<p>{{ comment.comment }}</p>
+			</div>
+				
+			{% endfor %}
+			<form method="POST">
+				{% csrf_token %}
+				<input type="text" name="comment_text">
+				<button type="submit">Comment</button>
+			</form>
+		{% for tag in post.tag_set.all %}
+			<h4><a style="display: block; margin: 10px" href="{% url 'tag-detail' tag.id %}">{{ tag.title }}</a></h4>
+		{% endfor %}
+
+
+
+		{% if user == post.user %}
+			<a style="border: 1px solid red; color: white; border-radius: 15px; background: darkred; text-decoration: none; padding: 5px" href="{% url 'post-delete' post.id %}">DELETE POST</a>
+			<a style="border: 1px solid green; color: white; border-radius: 15px; background: green; text-decoration: none; padding: 5px" href="{% url 'post-update' post.id %}">UPDATE POST</a>
+		{% endif %}
+	</div>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<h2 style="margin-left: 20px;">{{ tag.title }}</h2>
+
+<ul style="display: block;">
+    {% for post in tag.post.all %}
+
+    <h3><a href="{% url 'post-detail' post.id %}">{{ post.title }}</a></h3>
+
+    {% endfor %}
+</ul>
+
+{% endblock content %}
+
