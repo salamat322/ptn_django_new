@@ -16,7 +16,7 @@
        {% for i in post.tags.all %}
        <a href="#">{{ i.title }}</a>
        {% endfor %}
-      
+      <h3>{{ post.likes.all.count }} likes</h3>
      </div>
      {% endfor %}
    </div>

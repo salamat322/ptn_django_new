@@ -19,11 +19,24 @@
 			</div>
 				
 			{% endfor %}
+			{% if user.is_authenticated %}
 			<form method="POST">
 				{% csrf_token %}
 				<input type="text" name="comment_text">
 				<button type="submit">Comment</button>
 			</form>
+
+			<form method="POST">
+				{% csrf_token %}
+				<input type="hidden" name="like">
+				<button type="submit">Like</button>
+			</form>
+
+			<h4>{{ post.likes.all.count }}</h4>
+
+			{% endif %}
+
+
 		{% for tag in post.tag_set.all %}
 			<h4><a style="display: block; margin: 10px" href="{% url 'tag-detail' tag.id %}">{{ tag.title }}</a></h4>
 		{% endfor %}

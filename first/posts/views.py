@@ -15,9 +15,17 @@ def main_page(request):
 def post_detail(request, pk):
     post = Post.objects.get(pk=pk)
     if request.method == "POST":
-        comment = request.POST.get("comment_text")
-        Comment.objects.create(post=post, comment=comment, user=request.user)
+        try:
+            comment = request.POST.get("comment_text")
+            Comment.objects.create(post=post, comment=comment, user=request.user)
+        except:
+            if request.user in post.likes.all():
+                post.likes.remove(request.user)
+            else:
+                post.likes.add(request.user)
+
         return redirect(post.get_absolute_url())
+    
     return render(request,
                   "post_detail.html",
                   locals())

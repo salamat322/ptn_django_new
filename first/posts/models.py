@@ -9,6 +9,8 @@ class Post(models.Model):
     image = models.ImageField(upload_to="posts", blank=True)
     date = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    likes = models.ManyToManyField(User, related_name='likes')
+
 
     def __str__(self):
         return self.title
