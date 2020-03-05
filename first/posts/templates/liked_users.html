@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<ul style='display:block'>
+    {% for like in post.like_set.all %}
+        <li><h4><a href="#">{{ like.user.username }}</a></h4></li>
+    {% endfor %}
+</ul>
+
+{% endblock content %}
+

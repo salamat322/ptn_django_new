@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
 
-from .models import Post, Comment
+from .models import Post, Comment, Like
 
 
 def main_page(request):
@@ -15,9 +15,22 @@ def main_page(request):
 def post_detail(request, pk):
     post = Post.objects.get(pk=pk)
     if request.method == "POST":
-        comment = request.POST.get("comment_text")
-        Comment.objects.create(post=post, comment=comment, user=request.user)
+        try:
+            comment = request.POST.get("comment_text")
+            Comment.objects.create(post=post, comment=comment, user=request.user)
+        except:
+            try:
+                like = Like.objects.get(user=request.user, post=post)
+                like.delete()
+            except:
+                Like.objects.create(user=request.user, post=post)
+            # if request.user in post.likes.all():
+            #     post.likes.remove(request.user)
+            # else:
+            #     post.likes.add(request.user)
+
         return redirect(post.get_absolute_url())
+    
     return render(request,
                   "post_detail.html",
                   locals())
@@ -63,3 +76,17 @@ def post_update(request, pk):
         return redirect(post.get_absolute_url())
                 # posts/post.id/   - post-detail
     return render(request, "post_update.html", locals())
+
+
+def liked_users(request, pk):
+    post = Post.objects.get(pk=pk)
+    return render(request, 'liked_users.html', locals())
+
+
+def delete_comment(request, pk):
+    comment = Comment.objects.get(pk=pk)
+    post = comment.post
+    if request.method == "POST":
+        comment.delete()
+        return redirect(post.get_absolute_url())
+    return render(request, 'comment_delete.html', locals())

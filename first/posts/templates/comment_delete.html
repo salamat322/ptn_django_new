@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+	<h2>Are you sure?</h2>
+	<form method="POST">
+		{% csrf_token %}
+		<button type="submit">Yes</button>
+		<a href="{% url 'post-detail' post.id %}">NO</a>
+	</form>
+{% endblock %}
