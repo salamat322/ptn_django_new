@@ -15,7 +15,15 @@ def tag_detail(request, pk):
 def tag_create(request):
     if request.method == "POST":
         title = request.POST.get("title")
-        print(title)
+        a = False
+        for i in title:
+            if i != ' ':
+                a = False
+                break
+            else:
+                a = True
+        if a or len(title) == 0:
+            return render(request, "post_create.html", locals())
         tag = Tag.objects.create(title = title)
         return redirect(tag.get_absolute_url())
 

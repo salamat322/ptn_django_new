@@ -3,6 +3,9 @@
 {% block content %}
 
 <h1>Update Post</h1>
+	{% if a %}
+	  <p style="color: red;">erorr: data is incorrect</p>
+	{% endif %}
 	<form enctype="multipart/form-data" method="POST">
 		{% csrf_token %}
 		<input class="inp" value="{{post.title}}" type="text" name="title">
