@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
 
-from .models import Post, Comment, Like
+from .models import Post, Comment, Like, LikeComment
 
 
 def main_page(request):
@@ -19,16 +19,24 @@ def post_detail(request, pk):
             comment = request.POST.get("comment_text")
             Comment.objects.create(post=post, comment=comment, user=request.user)
         except:
-            try:
-                like = Like.objects.get(user=request.user, post=post)
-                like.delete()
-            except:
-                Like.objects.create(user=request.user, post=post)
-            # if request.user in post.likes.all():
-            #     post.likes.remove(request.user)
-            # else:
-            #     post.likes.add(request.user)
-
+            if 'like' in request.POST:
+                try:
+                    like = Like.objects.get(user=request.user, post=post)
+                    like.delete()
+                except:
+                    Like.objects.create(user=request.user, post=post)
+                # if request.user in post.likes.all():
+                #     post.likes.remove(request.user)
+                # else:
+                #     post.likes.add(request.user)
+            elif 'like-comment' in request.POST:
+                id = int(request.POST.get('like-comment'))
+                comment = Comment.objects.get(pk=id)
+                try:
+                    like = LikeComment.objects.get(user=request.user, comment=comment)
+                    like.delete()
+                except:
+                    LikeComment.objects.create(user=request.user, comment=comment)
         return redirect(post.get_absolute_url())
     
     return render(request,
@@ -39,6 +47,15 @@ def post_detail(request, pk):
 def post_create(request):
     if request.method == "POST":
         title = request.POST.get("title")
+        a = False
+        for i in title:
+            if i != ' ':
+                a = False
+                break
+            else:
+                a = True
+        if a or len(title) == 0:
+            return render(request, "post_create.html", locals())
         content = request.POST.get("content")
         user = request.user
         post_obj = Post.objects.create(user=user,
@@ -90,3 +107,13 @@ def delete_comment(request, pk):
         comment.delete()
         return redirect(post.get_absolute_url())
     return render(request, 'comment_delete.html', locals())
+
+def update_comment(request, pk):
+    comment = Comment.objects.get(pk=pk)
+    post = comment.post
+    if request.method == 'POST':
+        commit = request.POST.get('commit')
+        comment.comment = commit
+        comment.save() 
+        return redirect(post.get_absolute_url())
+    return render(request, 'comment_update.html', locals())

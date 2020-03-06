@@ -19,7 +19,14 @@
 				<p>{{ comment.comment }}</p>
 				{% if comment.user == request.user %}
 				<a style="max-width: 20px; max-height: 20px; margin-left: 10px; color: white; background: red; border: 1px solid black;" href="{% url 'delete-comment' comment.id %}">X</a>
+				<a style="margin-left: 10px;" href="{% url 'update-comment' comment.id %}">edit</a>
 				{% endif %}
+				<form method="POST">
+					{% csrf_token %}
+					<input type="hidden" name="like-comment" value="{{comment.id}}">
+					<button type="submit">Like</button>
+				</form>
+				<p>{{ comment.likecomment_set.all.count }} likes</p>
 			</div>
 			
 			{% endfor %}
