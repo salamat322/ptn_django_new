@@ -81,6 +81,15 @@ def post_update(request, pk):
     post = Post.objects.get(pk=pk)
     if request.method == "POST":
         title = request.POST.get("title")
+        a = False
+        for i in title:
+            if i != ' ':
+                a = False
+                break
+            else:
+                a = True
+        if a or len(title) == 0:
+            return render(request, "post_update.html", locals())
         content = request.POST.get("content")
 
         if len(request.FILES) != 0: 
