@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 
 from .models import Post, Comment, Like, LikeComment
+from tags.models import Tag
 
 
 def main_page(request):
@@ -47,6 +48,7 @@ def post_detail(request, pk):
 def post_create(request):
     if request.method == "POST":
         title = request.POST.get("title")
+        tag_title = request.POST.get('tag_title')
         a = False
         for i in title:
             if i != ' ':
@@ -58,9 +60,16 @@ def post_create(request):
             return render(request, "post_create.html", locals())
         content = request.POST.get("content")
         user = request.user
+
         post_obj = Post.objects.create(user=user,
             title=title, content=content)
-
+        if len(tag_title) != 0:
+            try:
+                tag = Tag.objects.get(title=tag_title)
+                tag.post.add(post_obj)
+            except:
+                tag_obj = Tag.objects.create(title=tag_title)
+                tag_obj.post.add(post_obj)
         if len(request.FILES) != 0:
             image = request.FILES["image"]
             post_obj.image = image
