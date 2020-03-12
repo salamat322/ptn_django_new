@@ -5,6 +5,11 @@ from .models import Post, Comment, Like, LikeComment
 from tags.models import Tag
 
 
+
+def default_page(request):
+    return render(request, 'default_page.html')
+
+
 def main_page(request):
     posts = Post.objects.all().order_by("-pk")  # select * from Post
     context = {

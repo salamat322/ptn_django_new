@@ -5,7 +5,9 @@
         <li><a href="{% url 'post-create' %}">CREATE POST</a></li>
         <li><a href="{% url 'tags-list' %}">All tags</a></li>
         <li><a href="{% url 'user-logout' %}">Logout</a></li>
-      {% else %}
+        <li><a href="{% url 'user-profile' user.id %}">Profile</a></li>
+
+        {% else %}
         <li><a href="{% url 'user-create' %}">Register</a></li>
         <li><a href="{% url 'user-login' %}">Login</a></li>
       {% endif %}

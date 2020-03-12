@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import login, authenticate
+from .models import Profile
 
 
 def signup(request):
@@ -17,6 +18,8 @@ def signup(request):
                 email=email)
             user.set_password(pass1)
             user.save()
+            
+            Profile.objects.create(user=user)
 
             user = authenticate(username=username, password=pass1)
             login(request, user)
@@ -41,3 +44,21 @@ def login_user(request):
 
     return render(request, 'login.html')
         
+
+
+
+def user_profile(request, pk):
+    user = User.objects.get(pk=pk)
+    return render(request, 'user_profile.html', locals())
+
+
+
+def user_update(request, pk):
+    user = User.objects.get(pk=pk)
+    if request.method == "POST":
+        bio = request.POST.get("bio")
+
+        user.profile.bio = bio
+        user.profile.save()
+        return redirect(user.profile.get_absolute_url())
+    return render(request, "user_profile.html")
