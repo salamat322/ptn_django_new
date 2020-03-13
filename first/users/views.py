@@ -48,17 +48,15 @@ def login_user(request):
 
 
 def user_profile(request, pk):
-    user = User.objects.get(pk=pk)
-    return render(request, 'user_profile.html', locals())
-
-
-
-def user_update(request, pk):
-    user = User.objects.get(pk=pk)
+    user_obj = User.objects.get(pk=pk)
+    user_profile = Profile.objects.get(user=user_obj)
     if request.method == "POST":
         bio = request.POST.get("bio")
 
-        user.profile.bio = bio
-        user.profile.save()
-        return redirect(user.profile.get_absolute_url())
-    return render(request, "user_profile.html")
+        user_profile.bio = bio
+        user_profile.save()
+        return redirect(user_profile.get_absolute_url())
+    return render(request, 'user_profile.html', locals())
+
+
+    

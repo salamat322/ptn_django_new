@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.urls import reverse
 
 
 class Profile(models.Model):
@@ -11,5 +12,5 @@ class Profile(models.Model):
         return f"{self.user.username}'s profile"
     
     def get_absolute_url(self):
-        return reverse("user-profile", kwargs={"pk": self.pk})
+        return reverse("user-profile", kwargs={"pk": self.user.pk})
     
